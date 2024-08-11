@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+  font-family: 'SCoreDream';
+}
+
+body {
+  background: url('https://cdn.pixabay.com/photo/2023/08/05/15/15/waves-8171279_1280.jpg') no-repeat;
+  background-size: cover;
+}
+
+ul, ol {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+h1, h2, h3, a {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+}

@@ -1,0 +1,53 @@
+.wrap {
+  margin: 30px auto 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+#notification {
+  font-weight: 600;
+  cursor: default;
+}
+
+/*? 리스트 영역 스타일링 */
+.notify {
+  width: 660px;
+  height: 730px;
+  margin: 20px auto 0 auto;
+  border: 2px solid black;
+  background-color: #eeeeeea6;
+}
+
+.notify-wrap {
+  display: grid;
+  grid-template-columns: (200px, 200px, 200px);
+}
+
+.notify-list {
+  
+}
+
+/*? 추가, 삭제버튼 스타일 영역 */
+.btn-wrap {
+  display: inline;
+  position: relative;
+  top: 94%;
+  left: 87%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background-color: #ffffff00;
+}
+
+.add-btn {
+  margin-right: 10px;
+}
+
+.add-btn, .remove-btn {
+  font-size: 20px;
+}

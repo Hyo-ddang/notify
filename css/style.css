@@ -22,18 +22,37 @@ h1 {
 
 .notify-wrap {
   display: grid;
-  grid-template-columns: (200px, 200px, 200px);
+  margin: 10px 10px 0;
+  grid-template-columns: repeat(3, 200px);
+  grid-template-rows: repeat(3, 200px);
+  grid-row-gap: 27px;
+  grid-column-gap: 17px;
+}
+
+.notify-list-link {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+
+.notify-list-link:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .notify-list {
-  
+  width: 200px;
+  height: 200px;
+  background-color: #ffffffa6;
+  color: black;
 }
 
 /*? 추가, 삭제버튼 스타일 영역 */
 .btn-wrap {
   display: inline;
   position: relative;
-  top: 94%;
+  top: 2%;
   left: 87%;
 }
 

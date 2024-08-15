@@ -6,6 +6,7 @@
   <title>Document</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/modal.css">
   <link href="https://webfontworld.github.io/score/SCoreDream.css" rel="stylesheet">
   <script src="https://kit.fontawesome.com/1ccb0a2168.js" crossorigin="anonymous"></script>
 </head>
@@ -31,6 +32,19 @@
         <button class="add-btn"><i class="fa-solid fa-plus"></i></button>
         <button class="remove-btn"><i class="fa-solid fa-trash-can"></i></button>
       </div>
+    </div>
+
+    <div class="modal-wrap hidden">
+      <form class="modal-display">
+        <p class="input-name-title">Title</p>
+        <input type="text" class="title">
+        <p class="input-name-content">Content</p>
+        <textarea name="content" class="content"></textarea>
+        <div class="modalBtn-wrap">
+          <button class="submit-btn">확인</button>
+          <button class="cancel-btn">취소</button>
+        </div>
+      </form>
     </div>
   </div>
 </body>

@@ -49,6 +49,28 @@ h1 {
   height: 200px;
   background-color: #ffffffa6;
   color: black;
+  overflow-y: hidden;
+  text-overflow: ellipsis;
+}
+
+.display-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.display-content {
+  display: -webkit-box; /* 웹킷 박스로 지정 */
+  white-space: wrap; /* 텍스트가 줄바꿈 되게끔 설정 */
+  -webkit-line-clamp: 6; /* n번째 줄까지 표시 */
+  -webkit-box-orient: vertical; /* 수직 정렬 */
+  overflow: hidden; /* 넘어가는 텍스트는 숨김 */
+  text-overflow: ellipsis; /* 텍스트가 넘어가면 ...으로 표시 */
+  font-size: 16px;
+  margin-bottom: 0;
 }
 
 /*? 추가, 삭제버튼 스타일 영역 */

@@ -30,13 +30,13 @@ function modalNotifyAdd(newNotify) {
 
 function modalBtnHandler(e) {
   e.preventDefault()
-  const newNotifytitle = inputTitle.value;
-  inputTitle.value = "";
-  const newNotifyContent = inputContent.value;
-  inputContent.value = "";
+  const newNotifytitle = inputTitle.value.trim();
+  // inputTitle.value = "";
+  const newNotifyContent = inputContent.value.trim();
+  // inputContent.value = "";
 
-  if (!newNotifytitle) {
-    
+  if (!newNotifytitle || !newNotifyContent) {
+    return;
   }
 
   const notifyObj = {
@@ -46,9 +46,9 @@ function modalBtnHandler(e) {
   };
   notifys.push(notifyObj);
   modalNotifyAdd(notifyObj);
+  modalDisplayOff(e);
 }
 
 modalOnAdd.addEventListener("click", modalDisplayOn);
 modalOffCancel.addEventListener("click", modalDisplayOff);
-modalOffAndSubmit.addEventListener("click", modalNotifyAdd);
-modalOffAndSubmit.addEventListener("click", modalDisplayOff);
+modalOffAndSubmit.addEventListener("click", modalBtnHandler);

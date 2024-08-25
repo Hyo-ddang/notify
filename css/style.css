@@ -181,3 +181,82 @@ button {
   border-radius: 3px;
   margin-left: 5px;
 }
+
+/* 삭제 모달 스타일 */
+.modal-alert-display {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0000007c;
+}
+
+.alert-remove {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  height: 150px;
+  top: 38%;
+  left: 42%;
+  background-color: #eee;
+  border: 1px solid black;
+}
+
+.remove-confirm {
+  text-align: center;
+  margin: 20px 0 0 0;
+}
+
+.modal-cancle {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+.modal-cancle:hover {
+  background-color: rgb(120, 120, 120);
+}
+
+.modal-cancle:active {
+  background-color: rgb(80, 80, 80);
+}
+
+.remove-agree, .remove-cancle {
+  border: 1px solid black;
+  border-radius: 3px;
+  color: white;
+  background-color: rgb(150, 150, 150);
+}
+
+.remove-agree {
+  margin-right: 10px;
+}
+
+.remove-agree:hover {
+  background-color: rgb(120, 120, 120);
+}
+
+.remove-agree:active {
+  background-color: rgb(80, 80, 80);
+}
+
+.remove-cancle {
+  margin-left: 10px;
+}
+
+.remove-cancle:hover {
+  background-color: rgb(110, 110, 110);
+}
+
+.remove-cancle:active {
+  background-color: rgb(80, 80, 80);
+}

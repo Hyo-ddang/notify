@@ -19,10 +19,12 @@ const notifyWrap = document.querySelector(".notify-wrap")
 
 let notifys = [];
 
+// 모달 표시
 function modalDisplayOn() {
   modalDisplay.classList.remove("hidden")
 }
 
+// 모달 숨김
 function modalDisplayOff(e) {
   e.preventDefault()
   modalDisplay.classList.add("hidden")
@@ -30,10 +32,12 @@ function modalDisplayOff(e) {
   inputContent.value = "";
 }
 
+// 로컬스토리지 생성
 function saveNotifys() {
   localStorage.setItem("notifys", JSON.stringify(notifys));
 }
 
+// HTML 추가
 function modalNotifyAdd(newNotify) {
   notifyWrap.innerHTML += `<a href="" class="notify-list-link"><li class="notify-list" id="${newNotify.id}">
   <input type="checkbox" class="remove-checkbox hidden-check">
@@ -45,8 +49,14 @@ function modalNotifyAdd(newNotify) {
 function notifyRemoveCheck() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
 
+  const isHidden = removeCheckBoxes.length > 0 && removeCheckBoxes[0].classList.contains("hidden-check");
+
   removeCheckBoxes.forEach((checkbox) => {
-    checkbox.classList.toggle("hidden-check")
+    if (isHidden) {
+      checkbox.classList.add("hidden-check");
+    } else {
+      checkbox.classList.remove("hidden-check");
+    }
   })
 }
 
@@ -57,7 +67,6 @@ function notifyRemove() {
     if (checkbox.checked) {
       const notifyItem = checkbox.closest(".notify-list");
       notifyItem.remove();
-      // notifys 배열에서도 삭제 (필요 시)
       notifys = notifys.filter((notify) => notify.id !== parseInt(notifyItem.id));
     }
   });
@@ -65,13 +74,22 @@ function notifyRemove() {
   saveNotifys()
 }
 
+function notifyReomveBtnChangeHandler() {
+
+}
+
 function modalBtnHandler(e) {
-  e.preventDefault()
   const newNotifytitle = inputTitle.value.trim();
   const newNotifyContent = inputContent.value.trim();
 
-  if (!newNotifytitle || !newNotifyContent) {
+  if (!newNotifytitle && !newNotifyContent) {
     alert("아무것도 적혀있지 않습니다.")
+    return;
+  } else if(newNotifytitle && !newNotifyContent) {
+    alert("내용이 비어 있습니다.")
+    return;
+  } else if(!newNotifytitle && newNotifyContent) {
+    alert("제목이 비어 있습니다.")
     return;
   }
 
@@ -83,6 +101,7 @@ function modalBtnHandler(e) {
   notifys.push(notifyObj);
   modalNotifyAdd(notifyObj);
   modalDisplayOff(e);
+  notifyRemoveCheck();
   saveNotifys()
 }
 

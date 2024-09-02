@@ -6,16 +6,20 @@
 5. 게시물 클릭 시 모달화면 띄워서 보여주기
 */
 
+//? 모달 관련 요소
 const modalDisplay = document.querySelector(".modal-wrap");
 const modalOffAndSubmit = document.querySelector(".submit-btn");
 const modalOffCancel = document.querySelector(".cancel-btn");
 const modalOnAdd = document.querySelector(".add-btn");
-const modalRemoveBtn = document.querySelector(".remove-btn");
 
+//? 입력 관련 요소
 const inputTitle = document.querySelector(".title");
 const inputContent = document.querySelector(".content");
 
+//? 알림 목록 및 버튼
+const modalRemoveBtn = document.querySelector(".remove-btn");
 const notifyWrap = document.querySelector(".notify-wrap")
+const xBtn = document.querySelector(".fa-plus")
 
 let notifys = [];
 
@@ -44,20 +48,20 @@ function modalNotifyAdd(newNotify) {
   <p class="display-title">${newNotify.title}</p>
   <p class="display-content">${newNotify.content}</p>
   </li></a>`
+
+  addCheckboxEventListeners()
 }
 
+// 체크박스 숨김/표시 로직
 function notifyRemoveCheck() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
 
-  const isHidden = removeCheckBoxes.length > 0 && removeCheckBoxes[0].classList.contains("hidden-check");
-
   removeCheckBoxes.forEach((checkbox) => {
-    if (isHidden) {
-      checkbox.classList.add("hidden-check");
-    } else {
-      checkbox.classList.remove("hidden-check");
-    }
-  })
+    // 삭제 버튼 클릭 시 hidden-check 클래스를 제거하여 체크박스를 표시
+    checkbox.classList.toggle("hidden-check");
+  });
+
+  addCheckboxEventListeners();
 }
 
 function notifyRemove() {
@@ -70,12 +74,40 @@ function notifyRemove() {
       notifys = notifys.filter((notify) => notify.id !== parseInt(notifyItem.id));
     }
   });
-  notifyRemoveCheck()
-  saveNotifys()
+  notifyRemoveCheck();
+  saveNotifys();
+  notifyReomveBtnChangeHandler();
+  hideCheckBoxes();
+  // 삭제버튼 클릭 시 체크박스 표시가 안 되는 버그 수정 해야됨.
 }
 
+// 체크박스에 하나라도 입력될 시 체크 아이콘이 활성화 되면서 모달창 실행
 function notifyReomveBtnChangeHandler() {
+  const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
 
+  let isChecked = false;
+
+  removeCheckBoxes.forEach(checkbox => {
+    if(checkbox.checked) {
+      isChecked = true;
+    }
+  })
+
+  if(isChecked) {
+    modalRemoveBtn.classList.add("fa-check")
+  } else {
+    modalRemoveBtn.classList.remove("fa-check");
+  }
+  // + 버튼이 체크 버튼으로 바뀌는걸 쓰레기통 버튼이 바뀌는걸로 설정 해야함.
+}
+
+// 체크박스를 숨기는 함수
+function hideCheckBoxes() {
+  const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
+
+  removeCheckBoxes.forEach((checkbox) => {
+    checkbox.classList.add("hidden-check");
+  });
 }
 
 function modalBtnHandler(e) {
@@ -102,13 +134,23 @@ function modalBtnHandler(e) {
   modalNotifyAdd(notifyObj);
   modalDisplayOff(e);
   notifyRemoveCheck();
-  saveNotifys()
+  saveNotifys();
+  hideCheckBoxes();
+}
+
+// 체크박스에 이벤트 리스너 추가
+function addCheckboxEventListeners() {
+  const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
+  removeCheckBoxes.forEach((checkbox) => {
+    checkbox.removeEventListener("change", notifyReomveBtnChangeHandler);
+    checkbox.addEventListener("change", notifyReomveBtnChangeHandler);
+  });
 }
 
 modalOnAdd.addEventListener("click", modalDisplayOn);
 modalOffCancel.addEventListener("click", modalDisplayOff);
 modalOffAndSubmit.addEventListener("click", modalBtnHandler);
-modalRemoveBtn.addEventListener("click", notifyRemove);
+modalRemoveBtn.addEventListener("click", notifyRemoveCheck);
 
 //* localStorage에 저장된 배열을 화면에 렌더링
 const savedNotifys = localStorage.getItem("notifys");
@@ -116,4 +158,6 @@ if (savedNotifys !== null) {
   const parsedNotifys = JSON.parse(savedNotifys);
   notifys = parsedNotifys;
   parsedNotifys.forEach(modalNotifyAdd);
+  notifyRemoveCheck();
+  hideCheckBoxes();
 }

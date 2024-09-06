@@ -103,6 +103,10 @@ button {
   margin-right: 10px;
 }
 
+.remove-no {
+  transform: rotate(45deg);
+}
+
 .add-btn, .remove-btn {
   font-size: 20px;
   -webkit-transform: scale(1);

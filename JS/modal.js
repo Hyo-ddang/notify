@@ -40,6 +40,33 @@ function modalBtnHandler(e) {
   saveNotifys();
 }
 
+document.querySelector("click", (e) => {
+  const newNotifytitle = inputTitle.value.trim();
+  const newNotifyContent = inputContent.value.trim();
+  
+  if (!newNotifytitle && !newNotifyContent) {
+    alert("아무것도 적혀있지 않습니다.")
+    return;
+  } else if(newNotifytitle && !newNotifyContent) {
+    alert("내용이 비어 있습니다.")
+    return;
+  } else if(!newNotifytitle && newNotifyContent) {
+    alert("제목이 비어 있습니다.")
+    return;
+  }
+
+  const notifyObj = {
+    title: newNotifytitle,
+    content: newNotifyContent,
+    id: Date.now(),
+  };
+  notifys.push(notifyObj);
+  modalNotifyAdd(notifyObj);
+  modalDisplayOff(e);
+  toggleCheckBoxes();
+  saveNotifys();
+})
+
 modalOffAndSubmit.addEventListener("click", modalBtnHandler);
 modalOnAdd.addEventListener("click", modalDisplayOn);
 modalOffCancel.addEventListener("click", modalDisplayOff);

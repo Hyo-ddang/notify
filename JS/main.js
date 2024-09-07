@@ -24,6 +24,7 @@ const modalRemoveBtnOK = document.querySelector(".fa-check");
 const notifyWrap = document.querySelector(".notify-wrap");
 const plusBtn = document.querySelector(".fa-plus");
 const checkBtn = document.querySelector(".fa-check");
+const removeOk = document.querySelector(".remove-agree");
 
 
 let notifys = [];
@@ -49,17 +50,6 @@ function saveNotifys() {
   localStorage.setItem("notifys", JSON.stringify(notifys));
 }
 
-//* HTML 추가
-function modalNotifyAdd(newNotify) {
-  notifyWrap.innerHTML += `<a href="" class="notify-list-link"><li class="notify-list" id="${newNotify.id}">
-  <input type="checkbox" class="remove-checkbox hidden-check">
-  <p class="display-title">${newNotify.title}</p>
-  <p class="display-content">${newNotify.content}</p>
-  </li></a>`
-
-  addCheckboxEventListeners()
-}
-
 //* 체크박스 숨김/표시 및 아이콘 변경 로직
 function toggleCheckBoxes() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
@@ -78,47 +68,47 @@ function toggleCheckBoxes() {
 
   // 체크박스가 체크된 경우 아이콘 변경
   if (isChecked) {
-    plusBtn.classList.remove("fa-plus");
     plusBtn.classList.add("remove-no");
     modalRemoveBtn.classList.remove("fa-trash-can");
     modalRemoveBtn.classList.add("fa-check");
   } else {
-    plusBtn.classList.add("fa-plus");
     plusBtn.classList.remove("remove-no");
     modalRemoveBtn.classList.add("fa-trash-can");
     modalRemoveBtn.classList.remove("fa-check");
   }
-
   addCheckboxEventListeners();
+  saveNotifys()
 }
 
-// 게시물 삭제 함수
+//* 게시물 삭제 함수
 function notifyRemove() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
 
   removeCheckBoxes.forEach((checkbox) => {
     if (checkbox.checked) {
-      const notifyItem = checkbox.closest(".notify-list");
+      const notifyItem = checkbox.closest(".notify-list-link");
       notifyItem.remove();
       notifys = notifys.filter((notify) => notify.id !== parseInt(notifyItem.id));
     }
   });
+  removeModalDisplay.classList.add("hidden");
+  plusBtn.classList.remove("remove-no");
   addCheckboxEventListeners();
-  saveNotifys();
   toggleCheckBoxes();
+  saveNotifys();
 }
 
-// 체크아이콘 클릭 시 삭제모달 활성화
+//* 체크아이콘 클릭 시 삭제모달 활성화
 function notifyRemoveModalDisplay() {
   if (removeModalDisplay && removeModalDisplay.classList.contains("hidden")) {
-    removeModalDisplay.classList.remove("hidden"); // hidden 클래스가 있을 경우에만 제거
+    // hidden 클래스가 있을 경우에만 제거
+    removeModalDisplay.classList.remove("hidden");
   }
 }
 
-// 체크박스에 하나라도 입력될 시 체크아이콘 활성화
+//* 체크박스에 하나라도 입력될 시 체크아이콘 활성화
 function notifyReomveBtnChange() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
-  
   let isChecked = false;
   
   removeCheckBoxes.forEach(checkbox => {
@@ -128,16 +118,19 @@ function notifyReomveBtnChange() {
   })
   
   if(isChecked) {
+    plusBtn.classList.add("remove-no");
     modalRemoveBtn.classList.remove("fa-trash-can")
     modalRemoveBtn.classList.add("fa-check")
   } else {
+    plusBtn.classList.remove("remove-no");
     modalRemoveBtn.classList.add("fa-trash-can")
     modalRemoveBtn.classList.remove("fa-check");
   }
+  saveNotifys()
 }
 
-
-// 체크박스에 이벤트 리스너 추가
+//! 버튼 함수 구간
+//* 체크박스에 이벤트 리스너 추가
 function addCheckboxEventListeners() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
   removeCheckBoxes.forEach((checkbox) => {
@@ -147,8 +140,9 @@ function addCheckboxEventListeners() {
 }
 
 modalRemoveBtn.addEventListener("click", toggleCheckBoxes);
+removeOk.addEventListener("click", notifyRemove);
 
-// 이벤트 위임 방식으로 이벤트 리스너 설정
+//* 이벤트 위임 방식으로 이벤트 리스너 설정
 document.addEventListener("click", (e) => {
   if (e.target.classList.contains("fa-check")) {
     // 체크 아이콘 클릭 시 삭제 모달 활성화
@@ -157,6 +151,8 @@ document.addEventListener("click", (e) => {
   }
 });
 
+/* <------------------------------------------------------------------> */
+
 //* localStorage에 저장된 배열을 화면에 렌더링
 const savedNotifys = localStorage.getItem("notifys");
 if (savedNotifys !== null) {
@@ -164,4 +160,5 @@ if (savedNotifys !== null) {
   notifys = parsedNotifys;
   parsedNotifys.forEach(modalNotifyAdd);
   notifyReomveBtnChange()
+  saveNotifys()
 }

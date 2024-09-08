@@ -87,14 +87,15 @@ function notifyRemove() {
   removeCheckBoxes.forEach((checkbox) => {
     if (checkbox.checked) {
       const notifyItem = checkbox.closest(".notify-list-link");
-      notifyItem.remove();
       notifys = notifys.filter((notify) => notify.id !== parseInt(notifyItem.id));
+      notifyItem.remove();
     }
   });
   removeModalDisplay.classList.add("hidden");
   plusBtn.classList.remove("remove-no");
   addCheckboxEventListeners();
   toggleCheckBoxes();
+  console.log("save success !")
   saveNotifys();
 }
 
@@ -155,6 +156,7 @@ document.addEventListener("click", (e) => {
 
 //* localStorage에 저장된 배열을 화면에 렌더링
 const savedNotifys = localStorage.getItem("notifys");
+
 if (savedNotifys !== null) {
   const parsedNotifys = JSON.parse(savedNotifys);
   notifys = parsedNotifys;

@@ -1,12 +1,13 @@
 
 //* 모달 표시
 function modalDisplayOn() {
-  modalDisplay.classList.remove("hidden")
+  if (plusBtn.classList.contains("fa-plus")) {
+    modalDisplay.classList.remove("hidden")
+  }
 }
 
 //* 모달 숨김
-function modalDisplayOff(e) {
-  e.preventDefault()
+function modalDisplayOff() {
   modalDisplay.classList.add("hidden")
   inputTitle.value = "";
   inputContent.value = "";
@@ -33,39 +34,13 @@ function modalBtnHandler(e) {
     content: newNotifyContent,
     id: Date.now(),
   };
+  // location.reload();
   notifys.push(notifyObj);
   modalNotifyAdd(notifyObj);
   modalDisplayOff(e);
-  toggleCheckBoxes();
+  // toggleCheckBoxes();
   saveNotifys();
 }
-
-document.querySelector("click", (e) => {
-  const newNotifytitle = inputTitle.value.trim();
-  const newNotifyContent = inputContent.value.trim();
-  
-  if (!newNotifytitle && !newNotifyContent) {
-    alert("아무것도 적혀있지 않습니다.")
-    return;
-  } else if(newNotifytitle && !newNotifyContent) {
-    alert("내용이 비어 있습니다.")
-    return;
-  } else if(!newNotifytitle && newNotifyContent) {
-    alert("제목이 비어 있습니다.")
-    return;
-  }
-
-  const notifyObj = {
-    title: newNotifytitle,
-    content: newNotifyContent,
-    id: Date.now(),
-  };
-  notifys.push(notifyObj);
-  modalNotifyAdd(notifyObj);
-  modalDisplayOff(e);
-  toggleCheckBoxes();
-  saveNotifys();
-})
 
 modalOffAndSubmit.addEventListener("click", modalBtnHandler);
 modalOnAdd.addEventListener("click", modalDisplayOn);

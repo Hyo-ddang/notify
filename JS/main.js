@@ -1,10 +1,17 @@
 /*
+Todo
 1. 추가 함수 - O
 2. 삭제 함수 -> 버튼 디테일 추가, 체크박스 주변 영역 클릭 시 선택되는 이벤트 추가
 3. 로컬스토리지 - O
 4. 수정 함수 -> value값을 받아 모달창에서 수정하기
 5. 게시물 클릭 시 모달화면 띄워서 보여주기
-6. 한 페이지에 9개 표시 그 후로는 숫자로 표시
+6. 페이지네이션 기능 구현
+*/
+
+/*
+!수정 사항
+1. 컨텐츠가 추가되면 체크박스도 자동 활성화가 됨
+
 */
 
 //? 모달 관련 요소
@@ -36,18 +43,13 @@ function saveNotifys() {
 
 // HTML 추가
 function modalNotifyAdd(newNotify) {
-  notifyWrap.innerHTML += `<a href="" class="notify-list-link"><li class="notify-list" id="${newNotify.id}">
+  notifyWrap.innerHTML += `<a href="" class="notify-list-link" id="${newNotify.id}"><li class="notify-list">
   <input type="checkbox" class="remove-checkbox hidden-check">
   <p class="display-title">${newNotify.title}</p>
   <p class="display-content">${newNotify.content}</p>
   </li></a>`
 
   addCheckboxEventListeners()
-}
-
-//* 로컬스토리지 생성
-function saveNotifys() {
-  localStorage.setItem("notifys", JSON.stringify(notifys));
 }
 
 //* 체크박스 숨김/표시 및 아이콘 변경 로직
@@ -57,7 +59,7 @@ function toggleCheckBoxes() {
   let isChecked = false;
 
   removeCheckBoxes.forEach((checkbox) => {
-    // 쓰레기통 버튼 클릭 시 hidden-check 클래스를 토글
+    // 쓰레기통 버튼 클릭 시 hidden-check 클래스 삭제
     checkbox.classList.toggle("hidden-check");
 
     // 체크된 체크박스가 있는지 확인
@@ -68,16 +70,17 @@ function toggleCheckBoxes() {
 
   // 체크박스가 체크된 경우 아이콘 변경
   if (isChecked) {
+    plusBtn.classList.remove("fa-plus")
     plusBtn.classList.add("remove-no");
     modalRemoveBtn.classList.remove("fa-trash-can");
     modalRemoveBtn.classList.add("fa-check");
   } else {
+    plusBtn.classList.add("fa-plus")
     plusBtn.classList.remove("remove-no");
     modalRemoveBtn.classList.add("fa-trash-can");
     modalRemoveBtn.classList.remove("fa-check");
   }
   addCheckboxEventListeners();
-  saveNotifys()
 }
 
 //* 게시물 삭제 함수
@@ -89,13 +92,14 @@ function notifyRemove() {
       const notifyItem = checkbox.closest(".notify-list-link");
       notifys = notifys.filter((notify) => notify.id !== parseInt(notifyItem.id));
       notifyItem.remove();
+      checkbox.classList.add("hidden-check");
     }
   });
+  location.reload();
   removeModalDisplay.classList.add("hidden");
   plusBtn.classList.remove("remove-no");
   addCheckboxEventListeners();
   toggleCheckBoxes();
-  console.log("save success !")
   saveNotifys();
 }
 
@@ -107,7 +111,7 @@ function notifyRemoveModalDisplay() {
   }
 }
 
-//* 체크박스에 하나라도 입력될 시 체크아이콘 활성화
+//* 체크박스에 하나라도 입력될 시 체크아이콘, X아이콘 활성화
 function notifyReomveBtnChange() {
   const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
   let isChecked = false;
@@ -119,15 +123,30 @@ function notifyReomveBtnChange() {
   })
   
   if(isChecked) {
-    plusBtn.classList.add("remove-no");
+    plusBtn.classList.add("fa-xmark");
+    plusBtn.classList.remove("fa-plus")
     modalRemoveBtn.classList.remove("fa-trash-can")
     modalRemoveBtn.classList.add("fa-check")
   } else {
-    plusBtn.classList.remove("remove-no");
+    plusBtn.classList.remove("fa-xmark");
+    plusBtn.classList.add("fa-plus")
     modalRemoveBtn.classList.add("fa-trash-can")
     modalRemoveBtn.classList.remove("fa-check");
   }
-  saveNotifys()
+}
+
+//* 체크박스를 취소하는 버튼 핸들러
+function xBtnClickHandler() {
+  const removeCheckBoxes = document.querySelectorAll(".remove-checkbox");
+
+  if(plusBtn.classList.contains("fa-xmark")) {
+    plusBtn.classList.remove("fa-plus");
+    removeCheckBoxes.forEach(checkBox => {
+      checkBox.classList.toggle("hidden-check")
+      checkBox.checked = false
+    })
+  }
+  plusBtn.classList.remove("fa-xmark")
 }
 
 //! 버튼 함수 구간
@@ -140,6 +159,7 @@ function addCheckboxEventListeners() {
   });
 }
 
+plusBtn.addEventListener("click", xBtnClickHandler);
 modalRemoveBtn.addEventListener("click", toggleCheckBoxes);
 removeOk.addEventListener("click", notifyRemove);
 
